@@ -1,0 +1,13 @@
+version: '{branch}.{build}'
+image: Visual Studio 2017
+configuration: RelWithDebInfo
+clone_depth: 1
+before_build:
+- mkdir BLD
+- cd BLD
+- cmake -G "Visual Studio 15" -DBUILD_BINDING_DOTNET=OFF -DBOOST_ROOT=C:\Libraries\boost_1_69_0 -DBOOST_LIBRARYDIR=C:\Libraries\boost_1_69_0\lib32-msvc-15.0 ..
+- cd ..
+build:
+  project: BLD\qpid-cpp.sln
+  parallel: true
+  verbosity: normal

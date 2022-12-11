@@ -1,0 +1,38 @@
+#
+# Licensed to the Apache Software Foundation (ASF) under one
+# or more contributor license agreements.  See the NOTICE file
+# distributed with this work for additional information
+# regarding copyright ownership.  The ASF licenses this file
+# to you under the Apache License, Version 2.0 (the
+# "License"); you may not use this file except in compliance
+# with the License.  You may obtain a copy of the License at
+#
+#   http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing,
+# software distributed under the License is distributed on an
+# "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+# KIND, either express or implied.  See the License for the
+# specific language governing permissions and limitations
+# under the License.
+#
+
+# Name: Qpid
+# Description: Qpid Client C library
+# Version: @VERSION@
+# URL: http://qpid.apache.org/
+
+set (Qpid_VERSION       @VERSION@)
+
+set (Qpid_INCLUDE_DIRS  @includedir@)
+set (Qpid_LIBRARIES     optimized @libdir@/@QPIDMSGLIB@ @libdir@/@QPIDTYPESLIB@ debug @libdir@/@QPIDMSGLIBDEBUG@ @libdir@/@QPIDTYPESLIBDEBUG@)
+
+# Can't make this compatible with CMake 2.8.12 as Qpid::qpid really is an interface target
+# (because it has multiple libraries). So only allow for later versions of CMake
+if (NOT TARGET Qpid::qpid AND CMAKE_VERSION VERSION_GREATER "3.0")
+  add_library(Qpid::qpid INTERFACE IMPORTED)
+  target_link_libraries(Qpid::qpid INTERFACE ${Qpid_LIBRARIES})
+  target_include_directories(Qpid::qpid INTERFACE ${Qpid_INCLUDE_DIRS})
+endif()
+
+set (Qpid_FOUND True)
